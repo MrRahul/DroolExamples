@@ -1,0 +1,30 @@
+package rules 
+
+import com.sample.Message
+
+dialect "mvel" 
+
+rule "ABC"
+ruleflow-group "RFG1"
+         when
+           $m: Message(status == Message.HELLO);           
+            then
+            System.out.println("ABC: "+$m.getMessage());
+            $m.setStatus(Message.GOODBYE);
+            $m.setMessage("Bye");
+            System.out.println("==============================");
+            update($m);
+
+end
+
+rule "DEF"
+ruleflow-group "RFG2"
+         when
+           $m: Message(status == Message.GOODBYE);           
+            then
+            System.out.println("DEF: "+$m.getMessage());
+            $m.setStatus(0);
+            $m.setMessage("GOODBYE");
+             update($m);
+            
+end
