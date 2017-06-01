@@ -1,0 +1,31 @@
+package rules
+
+import drools.model.*
+
+rule "Turn off the AC of Kitchen"
+   //agenda-group "AC-OFF"
+         when
+              $room: Room(name.equals("KITCHEN"), 25 > temp);
+              $ac: AC(true == on,room == $room);
+            then
+            System.out.println("[ Turn off the AC of Kitchen]  turning off the kitchen ac");
+end
+
+rule "Using Salience"
+salience 1
+    when
+        $room: Room(name.equals("KITCHEN"), 25 > temp)
+        $ac: AC(true == on,room == $room);
+    then
+    kcontext.getKieRuntime().getAgenda().getAgendaGroup("AC-OFF").setFocus();
+        System.out.println("[ Using Salience = 1]  A duplicate rule");
+end
+
+rule "3rd Duplicate rule"
+agenda-group "AC-OFF"
+            when
+              $room: Room(name.equals("KITCHEN"), 25 > temp)
+              $ac: AC(true == on,room == $room);
+            then
+        System.out.println("[ 3rd duplicate rule] Agenda-group AC-OFF");
+end

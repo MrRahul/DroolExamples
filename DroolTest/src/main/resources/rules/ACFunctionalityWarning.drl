@@ -1,0 +1,14 @@
+package rules
+
+import drools.model.*
+
+rule "issue warning alert if ac is not working and it is On"
+agenda-group "AC-OFF"
+salience -1
+    when
+        $ac: AC(true == on, false == condition);
+    then
+    $ac.setOn(false);
+        System.out.println("[ Executed rule: agenda-group AC-OFF salience -1 issue warning alert if ac is not working and it is On]  "
+         +"PLEASE CHECK YOUR AC, IT IS NOT WORKING");
+end

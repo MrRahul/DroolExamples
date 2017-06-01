@@ -1,0 +1,25 @@
+package rules
+
+import drools.model.*
+
+rule "turn on the AC for temp greater than 30"
+    when
+        $room: Room( 30 < temp && name != "KITCHEN")
+        $ac: AC(room == $room, false == on)
+    then
+        $ac.setOn(true);
+        System.out.println("[ Executed rule: turn on the AC for temp greater than 30] room_name: "+$room.getName()+" room_temp: "
+        + $room.getTemp()+" ac works: "+$ac.getCondition());
+end
+
+rule "turn on AC for Kitchen" salience 10
+    when
+        $room: Room( 35 < temp, name.equals("KITCHEN"))
+        $ac: AC(room == $room, false == on)
+    then
+        $ac.setOn(true);
+        update($ac);
+        System.out.println("[ Executed rule: turn on AC for Kitchen] room_name: "+$room.getName()+" room_temp: "
+        + $room.getTemp()+" ac works: "+$ac.getCondition());
+        System.out.println("Updating a fact on the fly using drl");
+end
